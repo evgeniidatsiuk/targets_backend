@@ -37,7 +37,8 @@ const getUser = async (req) => {
 
     if (token) {
         try {
-            return await jwt.verify(token, 'riddlemethis');
+            const { id } = await jwt.verify(token, 'riddlemethis');
+            return await User.findById(id);
         } catch (e) {
             throw new AuthenticationError('Your session expired. Sign in again.');
         }
@@ -50,8 +51,7 @@ const app = new ApolloServer({
     context: async ({ req }) => {
         if (req) {
 
-            const { id } = await getUser(req);
-            const me = await User.findById(id)
+            const me = await getUser(req);
             return {
                 me,
                 models: {

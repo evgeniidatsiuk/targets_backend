@@ -19,8 +19,15 @@ export default {
         },
     },
     Mutation: {
-        createUser: async (parent, { email, password }, { models: { User } }, info) => {
-            const user = await User.create({ email, password });
+        signUp: async (parent, { email, password }, { models: { User } }, info) => {
+            let user = await User.findOne({ email }).lean()
+
+            if (user) {
+                throw new AuthenticationError('This email is already exists');
+            }
+
+            user = await User.create({ email, password });
+
             const token = jwt.sign({ id: user.id }, 'riddlemethis');
 
             return {
@@ -28,17 +35,17 @@ export default {
                 user
             };
         },
-        login: async (parent, { email, password }, { models: { User } }, info) => {
+        signIn: async (parent, { email, password }, { models: { User } }, info) => {
             const user = await User.findOne({ email });
 
             if (!user) {
-                throw new AuthenticationError('Invalid credentials');
+                throw new AuthenticationError('User not found');
             }
 
             const matchPasswords = bcrypt.compareSync(password, user.password);
 
             if (!matchPasswords) {
-                throw new AuthenticationError('Invalid credentials');
+                throw new AuthenticationError('Email or password is incorrect');
             }
 
             const token = jwt.sign({ id: user.id }, 'riddlemethis');

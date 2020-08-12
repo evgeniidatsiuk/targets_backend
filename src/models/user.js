@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
+import mongoose, { Schema } from 'mongoose'
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     email: {
         type: String,
         required: true,
@@ -11,17 +11,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    },
-    posts: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Post',
-        },
-    ],
+    }
 });
 
 userSchema.pre('save', function() {
-    const hash = bcrypt.hashSync(this.password, 16);
+    const hash = bcrypt.hashSync(this.password, 9);
     this.password = hash;
 });
 
