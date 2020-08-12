@@ -16,7 +16,7 @@ export default {
                 throw new AuthenticationError('You are not authenticated');
             }
 
-            const posts = await Post.find({ author: me.id }).exec();
+            const posts = await Post.find({ author: me.id }).lean();
 
             return posts;
         },
