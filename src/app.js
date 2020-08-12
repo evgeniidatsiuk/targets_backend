@@ -66,7 +66,7 @@ const app = new ApolloServer({
 app.applyMiddleware({ app: server, path: '/graphql' });
 
 
-server.listen(9000, () => {
+server.listen(process.env.PORT || 9000, () => {
     mongoose.connect(requireProcessEnv('MONGODB_URI'), {
         useNewUrlParser: true,
         useCreateIndex: true,
