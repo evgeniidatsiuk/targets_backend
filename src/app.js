@@ -61,6 +61,8 @@ const app = new ApolloServer({
             };
         }
     },
+    introspection: true,
+    playground: true
 });
 
 app.applyMiddleware({ app: server, path: '/graphql' });
