@@ -10,7 +10,6 @@ import resolvers from './resolvers';
 import User from './models/user';
 import Post from './models/post';
 
-import dotenv from 'dotenv-safe';
 import path from 'path';
 
 const server = express();
@@ -25,6 +24,7 @@ const requireProcessEnv = (name) => {
 }
 
 if (process.env.NODE_ENV !== 'production') {
+    const dotenv = require('dotenv-safe')
     dotenv.config({
         path: path.join(__dirname, '../.env'),
         example: path.join(__dirname, '../.env.example')
