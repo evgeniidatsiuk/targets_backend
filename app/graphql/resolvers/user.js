@@ -1,21 +1,26 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { AuthenticationError, UserInputError } from 'apollo-server'
+import config from '../../services/config'
 
 export default {
   Query: {
-    user: async (parent, { id }, { models: { User }, me }, info) => {
+    user: async (parent, { id }, { models: { User }, me }) => {
       if (!me) {
         throw new AuthenticationError('You are not authenticated')
       }
       const user = await User.findById(id)
 
       if (!user) {
-        throw new UserInputError('Incorrect user id')
+        throw new UserInputError('User not found', {
+          code: 'NOT_FOUND_USER_BY_ID',
+          value: id
+        })
       }
+
       return user
     },
-    me: async (parent, args, { models: { User }, me }, info) => {
+    me: async (parent, args, { me }) => {
       if (!me) {
         throw new AuthenticationError('You are not authenticated')
       }
@@ -23,7 +28,7 @@ export default {
     }
   },
   Mutation: {
-    signUp: async (parent, { email, password }, { models: { User } }, info) => {
+    signUp: async (parent, { email, password }, { models: { User } }) => {
       let user = await User.findOne({ email }).lean()
 
       if (user) {
@@ -35,14 +40,14 @@ export default {
 
       user = await User.create({ email, password })
 
-      const token = jwt.sign({ id: user.id }, 'riddlemethis')
+      const token = jwt.sign({ id: user.id }, config.jwtSecret)
 
       return {
         token,
         user
       }
     },
-    signIn: async (parent, { email, password }, { models: { User } }, info) => {
+    signIn: async (parent, { email, password }, { models: { User } }) => {
       const user = await User.findOne({ email })
 
       if (!user) {
@@ -61,7 +66,7 @@ export default {
         })
       }
 
-      const token = jwt.sign({ id: user.id }, 'riddlemethis')
+      const token = jwt.sign({ id: user.id }, config.jwtSecret)
       return {
         user,
         token
@@ -69,7 +74,8 @@ export default {
     }
   },
   User: {
-    posts: async ({ id }, args, { models: { Post } }, info) => {
+    posts: async ({ id }, args, { models: { Post } }) => {
+      console.log('args', args)
       const posts = await Post.find({ author: id }).lean()
       return posts
     }

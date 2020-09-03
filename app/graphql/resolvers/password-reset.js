@@ -5,8 +5,7 @@ export default {
     getPasswordReset: async (
       parent,
       { token },
-      { models: { PasswordReset } },
-      info
+      { models: { PasswordReset } }
     ) => {
       const reset = await PasswordReset.findOne({ token }).lean()
 
@@ -21,16 +20,15 @@ export default {
     createPasswordReset: async (
       parent,
       { email },
-      { models: { User, PasswordReset } },
-      info
+      { models: { User, PasswordReset } }
     ) => {
-      // TODO: regex
-      if (!email) {
-        throw new UserInputError('User not found', {
-          code: 'INVALID_EMAIL',
-          value: email || ''
-        })
-      }
+      // // TODO: regex
+      // if (!email) {
+      //   throw new UserInputError('User not found', {
+      //     code: 'INVALID_EMAIL',
+      //     value: email || ''
+      //   })
+      // }
 
       const user = await User.findOne({ email })
 
@@ -50,7 +48,7 @@ export default {
     }
   },
   PasswordReset: {
-    user: async ({ user }, args, { models: { User } }, info) => {
+    user: async ({ user }, args, { models: { User } }) => {
       return !!(await User.findById(user).lean())
     }
   }

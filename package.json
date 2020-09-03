@@ -2,7 +2,7 @@
   "name": "targets_backend",
   "version": "1.0.0",
   "description": "",
-  "main": "src",
+  "main": "app",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
@@ -30,6 +30,7 @@
     "apollo-server-express": "^2.17.0",
     "babel-eslint": "^10.1.0",
     "bcrypt": "^5.0.0",
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^15.3.0",

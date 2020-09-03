@@ -2,7 +2,7 @@ import { AuthenticationError } from 'apollo-server'
 
 export default {
   Query: {
-    post: async (parent, { id }, { models: { Post }, me }, info) => {
+    post: async (parent, { id }, { models: { Post }, me }) => {
       if (!me) {
         throw new AuthenticationError('You are not authenticated')
       }
@@ -15,7 +15,7 @@ export default {
 
       return post
     },
-    posts: async (parent, args, { models: { Post }, me }, info) => {
+    posts: async (parent, args, { models: { Post }, me }) => {
       if (!me) {
         throw new AuthenticationError('You are not authenticated')
       }
@@ -42,7 +42,7 @@ export default {
     }
   },
   Post: {
-    author: async ({ author }, args, { models: { User } }, info) => {
+    author: async ({ author }, args, { models: { User } }) => {
       const user = await User.findById(author).lean()
 
       if (!user) {
