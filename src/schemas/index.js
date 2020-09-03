@@ -1,4 +1,5 @@
-import userSchema from './user';
-import postSchema from './post';
+import userSchema from './user'
+import postSchema from './post'
+import passwordResetSchema from './password-reset'
 
-export default [userSchema, postSchema];
+export default [userSchema, postSchema, passwordResetSchema]

@@ -1,20 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose'
 
-const postSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    content: {
-        type: String,
-        required: true,
-    },
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-});
+const postSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+})
 
-const model = mongoose.model('Post', postSchema);
+const model = mongoose.model('Post', postSchema)
 
-export default model;
+export default model

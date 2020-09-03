@@ -1,4 +1,5 @@
-import postResolver from './post';
-import userResolver from './user';
+import postResolver from './post'
+import userResolver from './user'
+import passwordResetResolver from './password-reset'
 
-export default [userResolver, postResolver];
+export default [userResolver, postResolver, passwordResetResolver]

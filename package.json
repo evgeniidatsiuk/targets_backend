@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
-    "dev": "nodemon --exec babel-node ."
+    "dev": "nodemon -i ."
   },
   "repository": {
     "type": "git",
@@ -20,23 +20,34 @@
   },
   "homepage": "https://github.com/evgeniidatsiuk/targets_backend#readme",
   "dependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.11.5",
     "@babel/node": "^7.10.5",
     "@babel/plugin-proposal-export-default-from": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/register": "^7.10.5",
-    "apollo-server": "^2.16.1",
-    "apollo-server-express": "^2.16.1",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/register": "^7.11.5",
+    "apollo-server": "^2.17.0",
+    "apollo-server-express": "^2.17.0",
+    "babel-eslint": "^10.1.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.28",
-    "nodemon": "^2.0.4"
+    "mongoose": "^5.10.2",
+    "nodemon": "^2.0.4",
+    "rand-token": "^1.0.1"
   },
   "devDependencies": {
-    "dotenv-safe": "^8.2.0"
+    "dotenv-safe": "^8.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "^1.19.1"
   }
 }
