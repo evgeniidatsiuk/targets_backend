@@ -1,6 +1,6 @@
 import cors from 'cors'
 import express from 'express'
-import { ApolloServer, AuthenticationError } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 
 import schemas from './graphql/schemas'
 import resolvers from './graphql/resolvers'
@@ -33,6 +33,7 @@ try {
       }
     },
     formatError: (err) => {
+      console.log('err', err)
       return {
         message: err.message,
         code: err.extensions.exception.code || err.extensions.code,
