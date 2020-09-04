@@ -33,14 +33,10 @@ try {
       }
     },
     formatError: (err) => {
-      if (err.extensions.code === 'INTERNAL_SERVER_ERROR') {
-        return err
-      }
-
       return {
         message: err.message,
         code: err.extensions.exception.code || err.extensions.code,
-        value: err.extensions.exception.value
+        value: err.extensions.exception.value || null
       }
     },
     introspection: true,

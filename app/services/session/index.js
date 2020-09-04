@@ -5,7 +5,6 @@ import config from '../config'
 
 export const getUser = async (req) => {
   const token = req.headers.token
-  console.log('token', token)
 
   if (token) {
     try {
