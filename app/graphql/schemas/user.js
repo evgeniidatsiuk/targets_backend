@@ -1,10 +1,15 @@
-import { gql } from 'apollo-server';
+import { gql } from 'apollo-server'
 
 export default gql`
+  type Posts {
+    rows: [Post]!
+    count: Int!
+  }
+
   type User {
     id: ID!
     email: String!
-    posts: [Post!]!
+    posts(page: Int!, limit: Int!, q: String): Posts
   }
 
   type Auth {

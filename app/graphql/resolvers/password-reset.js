@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server'
+import { validateEmail } from '../helpers/app'
 
 export default {
   Query: {
@@ -22,14 +23,7 @@ export default {
       { email },
       { models: { User, PasswordReset } }
     ) => {
-      // // TODO: regex
-      // if (!email) {
-      //   throw new UserInputError('User not found', {
-      //     code: 'INVALID_EMAIL',
-      //     value: email || ''
-      //   })
-      // }
-
+      validateEmail(email)
       const user = await User.findOne({ email })
 
       if (!user) {

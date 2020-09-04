@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import config from '../../services/config'
+import { validateEmail } from '../helpers/app'
 
 export default {
   Query: {
@@ -29,6 +30,7 @@ export default {
   },
   Mutation: {
     signUp: async (parent, { email, password }, { models: { User } }) => {
+      validateEmail(email)
       let user = await User.findOne({ email }).lean()
 
       if (user) {
@@ -48,6 +50,7 @@ export default {
       }
     },
     signIn: async (parent, { email, password }, { models: { User } }) => {
+      validateEmail(email)
       const user = await User.findOne({ email })
 
       if (!user) {
@@ -76,8 +79,11 @@ export default {
   User: {
     posts: async ({ id }, args, { models: { Post } }) => {
       console.log('args', args)
-      const posts = await Post.find({ author: id }).lean()
-      return posts
+      const rows = await Post.find({ author: id }).lean()
+      return {
+        rows,
+        count: await Post.countDocuments({ author: id })
+      }
     }
   }
 }
