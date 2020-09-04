@@ -43,7 +43,7 @@ export default {
   },
   Post: {
     author: async ({ author }, args, { models: { User } }) => {
-      const user = await User.findById(author).lean()
+      const user = await User.findById(author)
 
       if (!user) {
         throw new Error('Author not found')
