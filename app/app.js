@@ -34,10 +34,26 @@ try {
     },
     formatError: (err) => {
       console.log('err', err)
-      return {
-        message: err.message,
-        code: err.extensions.exception.code || err.extensions.code,
-        value: err.extensions.exception.value || null
+      switch (err.extensions.code) {
+        case 'INTERNAL_SERVER_ERROR':
+          return {
+            message: err.message,
+            code: 'INTERNAL_SERVER_ERROR',
+            value: null
+          }
+
+        case 'UNAUTHENTICATED':
+          return {
+            message: err.message,
+            code: 'UNAUTHENTICATED',
+            value: null
+          }
+        default:
+          return {
+            message: err.message,
+            code: err.extensions.exception.code || err.extensions.code,
+            value: err.extensions.exception.value || null
+          }
       }
     },
     introspection: true,
