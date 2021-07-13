@@ -77,12 +77,31 @@ export default {
     }
   },
   User: {
-    posts: async ({ id }, args, { models: { Post } }) => {
-      console.log('args', args)
-      const rows = await Post.find({ author: id }).lean()
+    posts: async (parent, args, { models: { Post } }) => {
+      const { id } = parent
+      const { first, last } = args
+
+      const query = {}
+      const cursor = {}
+
+      if (id) query.author = id
+
+      if (first) {
+        cursor.limit = first
+        cursor.sort = { _id: 1 }
+      }
+
+      if (last) {
+        cursor.limit = last
+        cursor.sort = { _id: -1 }
+      }
+
+      const edges = await Post.find(query, {}, cursor).lean()
+      const totalCount = await Post.countDocuments(query)
+
       return {
-        rows,
-        count: await Post.countDocuments({ author: id })
+        edges,
+        totalCount
       }
     }
   }
