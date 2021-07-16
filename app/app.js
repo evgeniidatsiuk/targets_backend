@@ -9,26 +9,30 @@ import mongoose from '../app/services/mongoose'
 
 import { getUser } from './services/session'
 
-if (config.mongo.uri) {
-  mongoose.connect(config.mongo.uri)
+try {
+  bootstrap()
+} catch (e) {
+  console.error(e)
 }
 
-try {
+async function bootstrap() {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: async ({ req }) => {
-      if (req) {
-        const me = await getUser(req)
-        return {
-          me,
-          models
-        }
+      const token = req.headers.token
+      const me = await getUser(token)
+
+      return {
+        me,
+        models
       }
     },
     formatError: (err) => {
-      console.log('err', err)
+      console.error('formatError', err)
+
       const code = err.extensions.code
+
       switch (code) {
         case 'INTERNAL_SERVER_ERROR':
           return {
@@ -55,11 +59,8 @@ try {
     playground: true
   })
 
-  setImmediate(() => {
-    server.listen().then(({ url }) => {
-      console.log(`🚀 Server ready at ${url}`)
-    })
-  })
-} catch (e) {
-  console.log(e)
+  const { url } = await server.listen()
+  console.log(`🚀 Server ready at ${url}`)
+
+  await mongoose.connect(config.mongo.uri)
 }
