@@ -1,8 +1,6 @@
-import cors from 'cors'
-import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server'
 
-import schemas from './graphql/schemas'
+import typeDefs from './graphql/schemas'
 import resolvers from './graphql/resolvers'
 
 import models from './graphql/models'
@@ -11,17 +9,13 @@ import mongoose from '../app/services/mongoose'
 
 import { getUser } from './services/session'
 
-const server = express()
-
-server.use(cors())
-
 if (config.mongo.uri) {
   mongoose.connect(config.mongo.uri)
 }
 
 try {
-  const app = new ApolloServer({
-    typeDefs: schemas,
+  const server = new ApolloServer({
+    typeDefs,
     resolvers,
     context: async ({ req }) => {
       if (req) {
@@ -61,15 +55,11 @@ try {
     playground: true
   })
 
-  app.applyMiddleware({ app: server, path: '/graphql' })
-
   setImmediate(() => {
-    server.listen(process.env.PORT || 9000, () =>
-      console.log('TARGETS BACKEND')
-    )
+    server.listen().then(({ url }) => {
+      console.log(`🚀 Server ready at ${url}`)
+    })
   })
 } catch (e) {
   console.log(e)
 }
-
-export default server
